@@ -8,13 +8,13 @@ spring:
     cloud:
       gcp:
           sql:
-#              instance-connection-name: xcode-notes-be:us-central1:xcode-balige
-#              database-name: xcode-notes
+              instance-connection-name: xcode-ingot:us-central1:xcode-hinalang
+              database-name: hinalang
     datasource:
         hikari:
             maximum-pool-size: 10
-#        username: ENC(Te/HiLESkKgrvPIThZ3Yzg==)
-#        password: ENC(9p4elCdMPnPl/TqIc1T84uJ9wHI3SjV3qAU1XmwbNwQ=)
+        username: ENC(Te/HiLESkKgrvPIThZ3Yzg==)
+        password: ENC(Fr8Wmmyf73fWa0OzrzUeveh4oM0UczsKtAYs3qi4AO0=)
     jpa:
         hibernate:
             ddl-auto: update
