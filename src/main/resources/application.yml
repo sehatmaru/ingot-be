@@ -1,0 +1,32 @@
+logging:
+    level:
+        com:
+            zaxxer:
+                hikari: TRACE
+                hikari.HikariConfig: DEBUG
+spring:
+    cloud:
+      gcp:
+          sql:
+#              instance-connection-name: xcode-notes-be:us-central1:xcode-balige
+#              database-name: xcode-notes
+    datasource:
+        hikari:
+            maximum-pool-size: 10
+#        username: ENC(Te/HiLESkKgrvPIThZ3Yzg==)
+#        password: ENC(9p4elCdMPnPl/TqIc1T84uJ9wHI3SjV3qAU1XmwbNwQ=)
+    jpa:
+        hibernate:
+            ddl-auto: update
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        properties:
+            hibernate:
+                format_sql: true
+        show-sql: true
+    main:
+        allow-bean-definition-overriding: true
+jasypt:
+    encryptor:
+        password: xcode
+        algorithm: PBEWithMD5AndDES
+        iv-generator-classname: org.jasypt.iv.NoIvGenerator
