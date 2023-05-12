@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 public class Utils {
     public static String generateSecureId() {
@@ -60,5 +61,43 @@ public class Utils {
 
     public static Date getTomorrowDate() {
         return new Date(System.currentTimeMillis() + EXPIRE_DURATION);
+    }
+
+    public static String mask(String value) {
+        return isEmail(value) ? maskEmail(value) : maskUsername(value);
+    }
+    public static String maskEmail(String email) {
+        int atIndex = email.indexOf("@");
+        if (atIndex > 0) {
+            String domain = email.substring(atIndex);
+            String username = email.substring(0, atIndex);
+            return maskCharacters(username) + domain;
+        } else {
+            return email;
+        }
+    }
+
+    public static String maskUsername(String username) {
+        return maskCharacters(username);
+    }
+
+    private static String maskCharacters(String input) {
+        int length = input.length();
+        int maskLength = Math.max(1, length / 2); // Mask half of the input
+        int startIndex = (length - maskLength) / 2;
+        int endIndex = startIndex + maskLength;
+        StringBuilder masked = new StringBuilder(input);
+        for (int i = startIndex; i < endIndex; i++) {
+            masked.setCharAt(i, '*');
+        }
+        return masked.toString();
+    }
+
+    public static boolean isEmail(String input) {
+        // Regular expression pattern for email validation
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(emailRegex);
+
+        return pattern.matcher(input).matches();
     }
 }

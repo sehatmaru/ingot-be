@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 
 import static xcode.ingot.shared.ResponseCode.*;
 
-
 @Getter
 @Setter
 public class BaseResponse<T> {

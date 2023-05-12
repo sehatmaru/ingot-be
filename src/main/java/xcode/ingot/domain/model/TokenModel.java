@@ -15,7 +15,7 @@ import static xcode.ingot.shared.Utils.getTomorrowDate;
 @Data
 @Builder
 @Entity
-@Table(name = "token")
+@Table(name = "t_token")
 @DynamicUpdate
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,6 +39,8 @@ public class TokenModel {
 
     @Column(name = "expire_at")
     private Date expireAt;
+
+    private String password;
 
     public TokenModel(String token, String userSecureId) {
         this.secureId = generateSecureId();
