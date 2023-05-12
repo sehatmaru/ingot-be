@@ -177,4 +177,10 @@ public class UserService implements UserPresenter {
 
         return response;
     }
+
+    public String getCurrentUserPassword() {
+        Optional<UserModel> userModel = userRepository.findBySecureIdAndDeletedAtIsNull(CurrentUser.get().getUserSecureId());
+
+        return userModel.map(model -> encryptor(model.getPassword(), false)).orElse(null);
+    }
 }

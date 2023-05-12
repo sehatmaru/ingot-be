@@ -66,8 +66,8 @@ public class KeyMapper {
     public OpenKeyResponse keyModelToOpenKeyResponse(KeyModel model) {
         if (model != null) {
             OpenKeyResponse response = new OpenKeyResponse();
-            response.setPassword(model.getPassword());
-            response.setUsername(mask(model.getUsername()));
+            response.setPassword(encryptor(model.getPassword(), false));
+            response.setUsername(model.getUsername());
 
             return response;
         } else {

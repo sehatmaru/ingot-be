@@ -27,6 +27,9 @@ import static xcode.ingot.shared.ResponseCode.*;
 public class KeyService implements KeyPresenter {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private KeyRepository keyRepository;
 
     private final KeyMapper keyMapper = new KeyMapper();
@@ -62,7 +65,7 @@ public class KeyService implements KeyPresenter {
 
         Optional<KeyModel> model = keyRepository.findBySecureIdAndDeletedAtIsNull(request.getSecureId());
 
-        if (model.isEmpty()) {
+        if (model.isEmpty() || !isBelonging(model.get().getUserSecureId())) {
             throw new AppException(NOT_FOUND_MESSAGE);
         }
 
@@ -90,7 +93,7 @@ public class KeyService implements KeyPresenter {
 
         Optional<KeyModel> model = keyRepository.findBySecureIdAndDeletedAtIsNull(request.getSecureId());
 
-        if (model.isEmpty()) {
+        if (model.isEmpty() || !isBelonging(model.get().getUserSecureId())) {
             throw new AppException(NOT_FOUND_MESSAGE);
         }
 
@@ -134,7 +137,11 @@ public class KeyService implements KeyPresenter {
 
         Optional<KeyModel> model = keyRepository.findBySecureIdAndDeletedAtIsNull(request.getSecureId());
 
-        if (model.isEmpty() || !Objects.equals(CurrentUser.get().getPassword(), request.getMasterPassword())) {
+        if (model.isEmpty() || !isBelonging(model.get().getUserSecureId())) {
+            throw new AppException(NOT_FOUND_MESSAGE);
+        }
+
+        if (!userService.getCurrentUserPassword().equals(request.getPassword())) {
             throw new AppException(INVALID_PASSWORD);
         }
 
@@ -153,4 +160,7 @@ public class KeyService implements KeyPresenter {
         return response;
     }
 
+    private boolean isBelonging(String secureId) {
+        return secureId.equals(CurrentUser.get().getUserSecureId());
+    }
 }

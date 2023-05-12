@@ -7,7 +7,7 @@ import xcode.ingot.domain.request.BaseRequest;
 @Getter
 @Setter
 public class OpenKeyRequest extends BaseRequest {
-    private String masterPassword;
+    private String password;
 
     public OpenKeyRequest() {
     }
