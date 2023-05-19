@@ -8,6 +8,7 @@ import xcode.ingot.domain.request.key.OpenKeyRequest;
 import xcode.ingot.domain.response.BaseResponse;
 import xcode.ingot.domain.response.key.CreateEditKeyResponse;
 import xcode.ingot.domain.response.key.KeyResponse;
+import xcode.ingot.domain.response.key.ListKeyResponse;
 import xcode.ingot.domain.response.key.OpenKeyResponse;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface KeyPresenter {
     BaseResponse<CreateEditKeyResponse> create(CreateEditKeyRequest request);
     BaseResponse<CreateEditKeyResponse> edit(CreateEditKeyRequest request);
     BaseResponse<KeyResponse> getDetail(BaseRequest request);
-    BaseResponse<List<KeyResponse>> getList(ListKeyRequest request);
+    BaseResponse<ListKeyResponse> getList(ListKeyRequest request);
     BaseResponse<OpenKeyResponse> openKey(OpenKeyRequest request);
     BaseResponse<List<KeyTypeEnum>> getKeyTypeList();
 }

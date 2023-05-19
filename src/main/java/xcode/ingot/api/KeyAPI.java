@@ -13,6 +13,7 @@ import xcode.ingot.domain.request.key.OpenKeyRequest;
 import xcode.ingot.domain.response.BaseResponse;
 import xcode.ingot.domain.response.key.CreateEditKeyResponse;
 import xcode.ingot.domain.response.key.KeyResponse;
+import xcode.ingot.domain.response.key.ListKeyResponse;
 import xcode.ingot.domain.response.key.OpenKeyResponse;
 import xcode.ingot.presenter.KeyPresenter;
 
@@ -49,8 +50,8 @@ public class KeyAPI {
     }
 
     @PostMapping("/list")
-    ResponseEntity<BaseResponse<List<KeyResponse>>> getList(@RequestBody @Validated ListKeyRequest request) {
-        BaseResponse<List<KeyResponse>> response = keyPresenter.getList(request);
+    ResponseEntity<BaseResponse<ListKeyResponse>> getList(@RequestBody @Validated ListKeyRequest request) {
+        BaseResponse<ListKeyResponse> response = keyPresenter.getList(request);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

@@ -14,6 +14,7 @@ import xcode.ingot.domain.request.key.OpenKeyRequest;
 import xcode.ingot.domain.response.BaseResponse;
 import xcode.ingot.domain.response.key.CreateEditKeyResponse;
 import xcode.ingot.domain.response.key.KeyResponse;
+import xcode.ingot.domain.response.key.ListKeyResponse;
 import xcode.ingot.domain.response.key.OpenKeyResponse;
 import xcode.ingot.exception.AppException;
 import xcode.ingot.presenter.KeyPresenter;
@@ -103,20 +104,23 @@ public class KeyService implements KeyPresenter {
     }
 
     @Override
-    public BaseResponse<List<KeyResponse>> getList(ListKeyRequest request) {
-        BaseResponse<List<KeyResponse>> response = new BaseResponse<>();
-        List<KeyResponse> result = new ArrayList<>();
+    public BaseResponse<ListKeyResponse> getList(ListKeyRequest request) {
+        BaseResponse<ListKeyResponse> response = new BaseResponse<>();
+        ListKeyResponse result = new ListKeyResponse();
 
         try {
             Optional<List<KeyModel>> models = keyRepository.findAllByUserSecureIdAndDeletedAtIsNull(CurrentUser.get().getUserSecureId());
 
             if (models.isPresent()) {
                 List<KeyModel> filteredModels = models.get().stream()
-                        .filter(data -> data.getName().toLowerCase().contains(request.getSearch())
-                                && (request.getKeyType() == null || data.getKeyType() == request.getKeyType()))
+                        .filter(data -> data.getName().toLowerCase().contains(request.getSearch()))
+                        .filter(data -> request.getKeyType() == KeyTypeEnum.ALL || data.getKeyType() == request.getKeyType())
                         .collect(Collectors.toList());
 
-                result = keyMapper.keyModelListToKeyResponseList(filteredModels);
+                List<KeyResponse> list = keyMapper.keyModelListToKeyResponseList(filteredModels);
+
+                result.setData(list);
+                result.setTotalData(list.size());
             }
 
             response.setSuccess(result);
