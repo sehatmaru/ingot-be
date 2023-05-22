@@ -43,10 +43,6 @@ public class UserService implements UserPresenter {
     public BaseResponse<LoginResponse> login(LoginRequest request) {
         BaseResponse<LoginResponse> response = new BaseResponse<>();
 
-        if (request.getUsername().isEmpty() && request.getPassword().isEmpty()) {
-            throw new AppException(PARAMS_ERROR_MESSAGE);
-        }
-
         Optional<UserModel> model = userRepository.findByUsernameAndDeletedAtIsNull(request.getUsername());
 
         if (model.isEmpty() || !Objects.equals(encryptor(model.get().getPassword(), false), request.getPassword())) {
@@ -67,11 +63,6 @@ public class UserService implements UserPresenter {
     @Override
     public BaseResponse<RegisterResponse> register(RegisterRequest request) {
         BaseResponse<RegisterResponse> response = new BaseResponse<>();
-
-        if (request.getUsername().isEmpty() || request.getPassword().isEmpty()
-                || request.getFullname().isEmpty() || request.getEmail().isEmpty()) {
-            throw new AppException(PARAMS_ERROR_MESSAGE);
-        }
 
         if (userRepository.findByUsernameAndDeletedAtIsNull(request.getUsername()).isPresent()) {
             throw new AppException(EXIST_MESSAGE);
@@ -128,10 +119,6 @@ public class UserService implements UserPresenter {
     public BaseResponse<Boolean> editProfile(EditProfileRequest request) {
         BaseResponse<Boolean> response = new BaseResponse<>();
 
-        if (request.getFullname().isEmpty() || request.getEmail().isEmpty()) {
-            throw new AppException(PARAMS_ERROR_MESSAGE);
-        }
-
         Optional<UserModel> model = userRepository.findBySecureIdAndDeletedAtIsNull(CurrentUser.get().getUserSecureId());
 
         if (model.isEmpty()) {
@@ -152,10 +139,6 @@ public class UserService implements UserPresenter {
     @Override
     public BaseResponse<Boolean> changePassword(ChangePasswordRequest request) {
         BaseResponse<Boolean> response = new BaseResponse<>();
-
-        if (request.getOldPassword().isEmpty() || request.getNewPassword().isEmpty()) {
-            throw new AppException(PARAMS_ERROR_MESSAGE);
-        }
 
         Optional<UserModel> model = userRepository.findBySecureIdAndDeletedAtIsNull(CurrentUser.get().getUserSecureId());
 

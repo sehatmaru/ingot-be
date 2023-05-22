@@ -45,7 +45,6 @@ public class BaseExceptions extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleConversionNotSupported(ConversionNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        System.out.println(ex);
         response.setServerError(ex.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -53,7 +52,6 @@ public class BaseExceptions extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        System.out.println(ex);
         response.setFailed(ex.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -61,7 +59,6 @@ public class BaseExceptions extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotWritable(HttpMessageNotWritableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        System.out.println(ex);
         response.setFailed(ex.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.OK);

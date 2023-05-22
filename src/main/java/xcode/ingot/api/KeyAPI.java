@@ -19,6 +19,7 @@ import xcode.ingot.presenter.KeyPresenter;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping(value = "key")
 public class KeyAPI {

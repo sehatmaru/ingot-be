@@ -43,11 +43,6 @@ public class KeyService implements KeyPresenter {
     public BaseResponse<CreateEditKeyResponse> create(CreateEditKeyRequest request) {
         BaseResponse<CreateEditKeyResponse> response = new BaseResponse<>();
 
-        if (request.getName().isEmpty() || Objects.isNull(request.getKeyType())
-            || request.getUsername().isEmpty() || request.getPassword().isEmpty()) {
-            throw new AppException(PARAMS_ERROR_MESSAGE);
-        }
-
         try {
             KeyModel model = keyMapper.createEditRequestToKeyModel(request);
             keyRepository.save(model);
@@ -65,10 +60,6 @@ public class KeyService implements KeyPresenter {
     @Override
     public BaseResponse<CreateEditKeyResponse> edit(CreateEditKeyRequest request) {
         BaseResponse<CreateEditKeyResponse> response = new BaseResponse<>();
-
-        if (request.getSecureId().isEmpty()) {
-            throw new AppException(PARAMS_ERROR_MESSAGE);
-        }
 
         Optional<KeyModel> model = keyRepository.findBySecureIdAndDeletedAtIsNull(request.getSecureId());
 
@@ -96,10 +87,6 @@ public class KeyService implements KeyPresenter {
     @Override
     public BaseResponse<KeyResponse> getDetail(BaseRequest request) {
         BaseResponse<KeyResponse> response = new BaseResponse<>();
-
-        if (request.getSecureId().isEmpty()) {
-            throw new AppException(PARAMS_ERROR_MESSAGE);
-        }
 
         Optional<KeyModel> model = keyRepository.findBySecureIdAndDeletedAtIsNull(request.getSecureId());
 
@@ -192,9 +179,6 @@ public class KeyService implements KeyPresenter {
     }
 
     private KeyModel findBySecureId(String secureId, String password) {
-        if (secureId.isEmpty()) {
-            throw new AppException(PARAMS_ERROR_MESSAGE);
-        }
 
         Optional<KeyModel> model = keyRepository.findBySecureIdAndDeletedAtIsNull(secureId);
 

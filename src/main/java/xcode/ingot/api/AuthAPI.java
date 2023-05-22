@@ -15,6 +15,7 @@ import xcode.ingot.domain.response.auth.LoginResponse;
 import xcode.ingot.domain.response.auth.RegisterResponse;
 import xcode.ingot.presenter.UserPresenter;
 
+@Validated
 @RestController
 @RequestMapping(value = "auth")
 public class AuthAPI {
