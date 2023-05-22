@@ -2,6 +2,7 @@ package xcode.ingot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import xcode.ingot.domain.enums.EventEnum;
 import xcode.ingot.domain.enums.KeyTypeEnum;
 import xcode.ingot.domain.mapper.KeyMapper;
 import xcode.ingot.domain.model.CurrentUser;
@@ -31,6 +32,9 @@ public class KeyService implements KeyPresenter {
     private UserService userService;
 
     @Autowired
+    private HistoryService historyService;
+
+    @Autowired
     private KeyRepository keyRepository;
 
     private final KeyMapper keyMapper = new KeyMapper();
@@ -47,6 +51,8 @@ public class KeyService implements KeyPresenter {
         try {
             KeyModel model = keyMapper.createEditRequestToKeyModel(request);
             keyRepository.save(model);
+
+            historyService.addHistory(EventEnum.CREATE_KEY);
 
             response.setSuccess(keyMapper.keyModelToCreateEditKeyResponse(model));
         } catch (Exception e) {
@@ -75,6 +81,9 @@ public class KeyService implements KeyPresenter {
 
             if (model.isPresent()) {
                 keyRepository.save(model.get());
+
+                historyService.addHistory(EventEnum.EDIT_KEY);
+
                 response.setSuccess(keyMapper.keyModelToCreateEditKeyResponse(model.get()));
             }
         } catch (Exception e) {
@@ -148,6 +157,8 @@ public class KeyService implements KeyPresenter {
         if (!userService.getCurrentUserPassword().equals(request.getPassword())) {
             throw new AppException(INVALID_PASSWORD);
         }
+
+        historyService.addHistory(EventEnum.OPEN_KEY);
 
         response.setSuccess(keyMapper.keyModelToOpenKeyResponse(model.get()));
 
