@@ -6,9 +6,9 @@ import xcode.ingot.domain.request.BaseRequest;
 
 @Getter
 @Setter
-public class OpenKeyRequest extends BaseRequest {
+public class OpenDeleteKeyRequest extends BaseRequest {
     private String password;
 
-    public OpenKeyRequest() {
+    public OpenDeleteKeyRequest() {
     }
 }

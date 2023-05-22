@@ -11,7 +11,7 @@ import xcode.ingot.domain.repository.KeyRepository;
 import xcode.ingot.domain.request.BaseRequest;
 import xcode.ingot.domain.request.key.CreateEditKeyRequest;
 import xcode.ingot.domain.request.key.ListKeyRequest;
-import xcode.ingot.domain.request.key.OpenKeyRequest;
+import xcode.ingot.domain.request.key.OpenDeleteKeyRequest;
 import xcode.ingot.domain.response.BaseResponse;
 import xcode.ingot.domain.response.key.CreateEditKeyResponse;
 import xcode.ingot.domain.response.key.KeyResponse;
@@ -141,26 +141,38 @@ public class KeyService implements KeyPresenter {
     }
 
     @Override
-    public BaseResponse<OpenKeyResponse> openKey(OpenKeyRequest request) {
+    public BaseResponse<OpenKeyResponse> openKey(OpenDeleteKeyRequest request) {
         BaseResponse<OpenKeyResponse> response = new BaseResponse<>();
 
-        if (request.getSecureId().isEmpty()) {
-            throw new AppException(PARAMS_ERROR_MESSAGE);
+        KeyModel model = findBySecureId(request.getSecureId(), request.getPassword());
+
+        try {
+            historyService.addHistory(EventEnum.OPEN_KEY);
+
+            response.setSuccess(keyMapper.keyModelToOpenKeyResponse(model));
+        } catch (Exception e) {
+            throw new AppException(e.toString());
         }
 
-        Optional<KeyModel> model = keyRepository.findBySecureIdAndDeletedAtIsNull(request.getSecureId());
+        return response;
+    }
 
-        if (model.isEmpty() || !isBelonging(model.get().getUserSecureId())) {
-            throw new AppException(NOT_FOUND_MESSAGE);
+    @Override
+    public BaseResponse<Boolean> deleteKey(OpenDeleteKeyRequest request) {
+        BaseResponse<Boolean> response = new BaseResponse<>();
+
+        KeyModel model = findBySecureId(request.getSecureId(), request.getPassword());
+
+        try {
+            model.setDeletedAt(new Date());
+
+            keyRepository.save(model);
+            historyService.addHistory(EventEnum.DELETE_KEY);
+
+            response.setSuccess(true);
+        } catch (Exception e) {
+            throw new AppException(e.toString());
         }
-
-        if (!userService.getCurrentUserPassword().equals(request.getPassword())) {
-            throw new AppException(INVALID_PASSWORD);
-        }
-
-        historyService.addHistory(EventEnum.OPEN_KEY);
-
-        response.setSuccess(keyMapper.keyModelToOpenKeyResponse(model.get()));
 
         return response;
     }
@@ -177,5 +189,23 @@ public class KeyService implements KeyPresenter {
 
     private boolean isBelonging(String secureId) {
         return secureId.equals(CurrentUser.get().getUserSecureId());
+    }
+
+    private KeyModel findBySecureId(String secureId, String password) {
+        if (secureId.isEmpty()) {
+            throw new AppException(PARAMS_ERROR_MESSAGE);
+        }
+
+        Optional<KeyModel> model = keyRepository.findBySecureIdAndDeletedAtIsNull(secureId);
+
+        if (model.isEmpty() || !isBelonging(model.get().getUserSecureId())) {
+            throw new AppException(NOT_FOUND_MESSAGE);
+        }
+
+        if (!userService.getCurrentUserPassword().equals(password)) {
+            throw new AppException(INVALID_PASSWORD);
+        }
+
+        return model.get();
     }
 }

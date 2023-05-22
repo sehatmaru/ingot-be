@@ -9,7 +9,7 @@ import xcode.ingot.domain.enums.KeyTypeEnum;
 import xcode.ingot.domain.request.BaseRequest;
 import xcode.ingot.domain.request.key.CreateEditKeyRequest;
 import xcode.ingot.domain.request.key.ListKeyRequest;
-import xcode.ingot.domain.request.key.OpenKeyRequest;
+import xcode.ingot.domain.request.key.OpenDeleteKeyRequest;
 import xcode.ingot.domain.response.BaseResponse;
 import xcode.ingot.domain.response.key.CreateEditKeyResponse;
 import xcode.ingot.domain.response.key.KeyResponse;
@@ -60,7 +60,7 @@ public class KeyAPI {
     }
 
     @PostMapping("/open")
-    ResponseEntity<BaseResponse<OpenKeyResponse>> openKey(@RequestBody @Validated OpenKeyRequest request) {
+    ResponseEntity<BaseResponse<OpenKeyResponse>> openKey(@RequestBody @Validated OpenDeleteKeyRequest request) {
         BaseResponse<OpenKeyResponse> response = keyPresenter.openKey(request);
 
         return ResponseEntity
@@ -78,9 +78,20 @@ public class KeyAPI {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
+
     @GetMapping("/type/list")
     ResponseEntity<BaseResponse<List<KeyTypeEnum>>> getKeyTypeList() {
         BaseResponse<List<KeyTypeEnum>> response = keyPresenter.getKeyTypeList();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @PostMapping("/delete")
+    ResponseEntity<BaseResponse<Boolean>> deleteKey(@RequestBody @Validated OpenDeleteKeyRequest request) {
+        BaseResponse<Boolean> response = keyPresenter.deleteKey(request);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
