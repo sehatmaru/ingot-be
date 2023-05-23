@@ -6,8 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RegisterResponse {
-    private String secureId;
-    private String fullname;
-    private String username;
-    private String email;
+    private String temporaryToken;
 }

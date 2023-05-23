@@ -7,6 +7,7 @@ public class ResponseCode {
     public static final String PARAMS_ERROR_MESSAGE = "Wrong params";
     public static final String EXIST_MESSAGE = "Data exist";
     public static final String AUTH_ERROR_MESSAGE = "Wrong username/password";
+    public static final String OTP_ERROR_MESSAGE = "Invalid OTP";
     public static final String TOKEN_ERROR_MESSAGE = "Invalid token";
     public static final String INVALID_PASSWORD = "Invalid password";
 

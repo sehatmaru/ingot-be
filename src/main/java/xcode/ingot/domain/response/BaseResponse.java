@@ -52,6 +52,11 @@ public class BaseResponse<T> {
         this.message = INVALID_PASSWORD;
     }
 
+    public void setInvalidOTP() {
+        this.statusCode = HttpStatus.UNAUTHORIZED.value();
+        this.message = OTP_ERROR_MESSAGE;
+    }
+
     public void setExistData() {
         this.statusCode = HttpStatus.CONFLICT.value();
         this.message = EXIST_MESSAGE;

@@ -4,6 +4,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -14,6 +15,7 @@ public class Utils {
     }
 
     private static final long EXPIRE_DURATION = 24 * 60 * 60 * 1000; // 24 hour
+    private static final long TEMPORARY_EXPIRE_DURATION = 5 * 60 * 1000; // 5 minute
 
     public static String encryptor(String value, boolean isEncrypt) {
         StandardPBEStringEncryptor jasypt = new StandardPBEStringEncryptor();
@@ -21,6 +23,18 @@ public class Utils {
         jasypt.setPassword("xcode");
 
         return isEncrypt ? jasypt.encrypt(value) :jasypt.decrypt(value);
+    }
+
+    public static String generateOTP() {
+        int length = 5;
+
+        int min = (int) Math.pow(10, length - 1);
+        int max = (int) Math.pow(10, length) - 1;
+
+        Random random = new Random();
+        int otp = random.nextInt(max - min + 1) + min;
+
+        return String.valueOf(otp);
     }
 
     public static long getDifferenceDays(Date date1, Date date2) {
@@ -61,6 +75,10 @@ public class Utils {
 
     public static Date getTomorrowDate() {
         return new Date(System.currentTimeMillis() + EXPIRE_DURATION);
+    }
+
+    public static Date getTemporaryDate() {
+        return new Date(System.currentTimeMillis() + TEMPORARY_EXPIRE_DURATION);
     }
 
     public static String mask(String value) {

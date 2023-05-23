@@ -1,18 +1,15 @@
 package xcode.ingot.api;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import xcode.ingot.domain.request.auth.ChangePasswordRequest;
-import xcode.ingot.domain.request.auth.EditProfileRequest;
-import xcode.ingot.domain.request.auth.LoginRequest;
-import xcode.ingot.domain.request.auth.RegisterRequest;
+import xcode.ingot.domain.request.auth.*;
 import xcode.ingot.domain.response.BaseResponse;
 import xcode.ingot.domain.response.auth.LoginResponse;
 import xcode.ingot.domain.response.auth.RegisterResponse;
+import xcode.ingot.domain.response.auth.VerifyOtpResponse;
 import xcode.ingot.presenter.UserPresenter;
 
 @Validated
@@ -79,6 +76,26 @@ public class AuthAPI {
     @PostMapping("/logout")
     ResponseEntity<BaseResponse<Boolean>> logout() {
         BaseResponse<Boolean> response = userPresenter.logout();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @PostMapping("/otp/verify")
+    ResponseEntity<BaseResponse<VerifyOtpResponse>> verifyOtp(@RequestBody @Validated VerifyOtpRequest request) {
+        BaseResponse<VerifyOtpResponse> response = userPresenter.verifyOtp(request);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @GetMapping("/otp/resend")
+    ResponseEntity<BaseResponse<Boolean>> resendOtp() {
+        BaseResponse<Boolean> response = userPresenter.resendOtp();
 
         return ResponseEntity
                 .status(HttpStatus.OK)

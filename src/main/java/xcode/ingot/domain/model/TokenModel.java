@@ -9,7 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.util.Date;
 
-import static xcode.ingot.shared.Utils.generateSecureId;
+import static xcode.ingot.shared.Utils.*;
 import static xcode.ingot.shared.Utils.getTomorrowDate;
 
 @Data
@@ -34,6 +34,9 @@ public class TokenModel {
     @Column(name = "token")
     private String token;
 
+    @Column(name = "temporary")
+    private boolean temporary;
+
     @Column(name = "created_at")
     private Date createdAt;
 
@@ -42,12 +45,13 @@ public class TokenModel {
 
     private String password;
 
-    public TokenModel(String token, String userSecureId) {
+    public TokenModel(String token, String userSecureId, boolean temporary) {
         this.secureId = generateSecureId();
         this.token = token;
         this.userSecureId = userSecureId;
         this.createdAt = new Date();
         this.expireAt = getTomorrowDate();
+        this.temporary = temporary;
     }
 
     public boolean isValid() {

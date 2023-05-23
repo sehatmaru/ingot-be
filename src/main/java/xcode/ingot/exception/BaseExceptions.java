@@ -91,6 +91,10 @@ public class BaseExceptions extends ResponseEntityExceptionHandler {
                 response.setInvalidPassword();
                 break;
             }
+            case OTP_ERROR_MESSAGE: {
+                response.setInvalidOTP();
+                break;
+            }
             default: response.setFailed(ex.getMessage());
         }
 

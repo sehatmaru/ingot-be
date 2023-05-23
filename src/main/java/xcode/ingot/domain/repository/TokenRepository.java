@@ -8,5 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface TokenRepository extends JpaRepository<TokenModel, String> {
-    Optional<TokenModel> findByToken(String secureId);
+    Optional<TokenModel> findByToken(String token);
+
+    Optional<TokenModel> findByTokenAndTemporaryIsTrue(String token);
 }

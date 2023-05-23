@@ -1,16 +1,17 @@
 package xcode.ingot.domain.mapper;
 
+import xcode.ingot.domain.model.OtpModel;
 import xcode.ingot.domain.model.UserModel;
 import xcode.ingot.domain.request.auth.ChangePasswordRequest;
 import xcode.ingot.domain.request.auth.EditProfileRequest;
 import xcode.ingot.domain.request.auth.RegisterRequest;
 import xcode.ingot.domain.response.auth.LoginResponse;
 import xcode.ingot.domain.response.auth.RegisterResponse;
+import xcode.ingot.domain.response.auth.VerifyOtpResponse;
 
 import java.util.Date;
 
-import static xcode.ingot.shared.Utils.encryptor;
-import static xcode.ingot.shared.Utils.generateSecureId;
+import static xcode.ingot.shared.Utils.*;
 
 public class UserMapper {
     public LoginResponse userModelToLoginResponse(UserModel model, String accessToken) {
@@ -68,9 +69,35 @@ public class UserMapper {
         }
     }
 
-    public RegisterResponse userModelToRegisterResponse(UserModel model) {
-        if (model != null) {
+    public RegisterResponse userModelToRegisterResponse(String token) {
+        if (!token.isEmpty()) {
             RegisterResponse response = new RegisterResponse();
+            response.setTemporaryToken(token);
+
+            return response;
+        } else {
+            return null;
+        }
+    }
+
+    public OtpModel userModelToOtpModel(UserModel model) {
+        if (model != null) {
+            OtpModel response = new OtpModel();
+            response.setUserSecureId(model.getSecureId());
+            response.setSecureId(generateSecureId());
+            response.setCode(generateOTP());
+            response.setCreatedAt(new Date());
+            response.setExpireAt(getTemporaryDate());
+
+            return response;
+        } else {
+            return null;
+        }
+    }
+
+    public VerifyOtpResponse userModelToVerifyOtpResponse(UserModel model) {
+        if (model != null) {
+            VerifyOtpResponse response = new VerifyOtpResponse();
             response.setSecureId(model.getSecureId());
             response.setFullname(model.getFullname());
             response.setEmail(model.getEmail());

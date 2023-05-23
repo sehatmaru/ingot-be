@@ -12,11 +12,11 @@ import java.util.Date;
 @Data
 @Builder
 @Entity
-@Table(name = "t_user")
+@Table(name = "t_otp")
 @DynamicUpdate
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserModel {
+public class OtpModel {
     
     @Id @Column(name = "id", length = 36) @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
@@ -24,27 +24,23 @@ public class UserModel {
     @Column(name = "secure_id")
     private String secureId;
 
-    @Column(name = "fullname")
-    private String fullname;
+    @Column(name = "user_secure_id")
+    private String userSecureId;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "code")
+    private String code;
 
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "password")
-    private String password;
-
-    @Column(name = "active")
-    private boolean active = false;
+    @Column(name = "verified")
+    private boolean verified;
 
     @Column(name = "created_at")
     private Date createdAt;
- 
-    @Column(name = "updated_at")
-    private Date updatedAt;
- 
-    @Column(name = "deleted_at")
-    private Date deletedAt;
+
+    @Column(name = "expire_at")
+    private Date expireAt;
+
+    public boolean isValid() {
+        return !expireAt.before(new Date());
+    }
+
 }
