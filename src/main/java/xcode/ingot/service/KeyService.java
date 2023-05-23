@@ -2,8 +2,8 @@ package xcode.ingot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import xcode.ingot.domain.enums.CategoryEnum;
 import xcode.ingot.domain.enums.EventEnum;
-import xcode.ingot.domain.enums.KeyTypeEnum;
 import xcode.ingot.domain.mapper.KeyMapper;
 import xcode.ingot.domain.model.CurrentUser;
 import xcode.ingot.domain.model.KeyModel;
@@ -47,7 +47,7 @@ public class KeyService implements KeyPresenter {
             KeyModel model = keyMapper.createEditRequestToKeyModel(request);
             keyRepository.save(model);
 
-            historyService.addHistory(EventEnum.CREATE_KEY);
+            historyService.addHistory(EventEnum.CREATE_KEY, null);
 
             response.setSuccess(keyMapper.keyModelToCreateEditKeyResponse(model));
         } catch (Exception e) {
@@ -73,7 +73,7 @@ public class KeyService implements KeyPresenter {
             if (model.isPresent()) {
                 keyRepository.save(model.get());
 
-                historyService.addHistory(EventEnum.EDIT_KEY);
+                historyService.addHistory(EventEnum.EDIT_KEY, null);
 
                 response.setSuccess(keyMapper.keyModelToCreateEditKeyResponse(model.get()));
             }
@@ -110,7 +110,7 @@ public class KeyService implements KeyPresenter {
             if (models.isPresent()) {
                 List<KeyModel> filteredModels = models.get().stream()
                         .filter(data -> data.getName().toLowerCase().contains(request.getSearch()))
-                        .filter(data -> request.getKeyType() == KeyTypeEnum.ALL || data.getKeyType() == request.getKeyType())
+                        .filter(data -> request.getCategory() == CategoryEnum.ALL || data.getCategory() == request.getCategory())
                         .collect(Collectors.toList());
 
                 List<KeyResponse> list = keyMapper.keyModelListToKeyResponseList(filteredModels);
@@ -134,7 +134,7 @@ public class KeyService implements KeyPresenter {
         KeyModel model = findBySecureId(request.getSecureId(), request.getPassword());
 
         try {
-            historyService.addHistory(EventEnum.OPEN_KEY);
+            historyService.addHistory(EventEnum.OPEN_KEY, null);
 
             response.setSuccess(keyMapper.keyModelToOpenKeyResponse(model));
         } catch (Exception e) {
@@ -154,7 +154,7 @@ public class KeyService implements KeyPresenter {
             model.setDeletedAt(new Date());
 
             keyRepository.save(model);
-            historyService.addHistory(EventEnum.DELETE_KEY);
+            historyService.addHistory(EventEnum.DELETE_KEY, null);
 
             response.setSuccess(true);
         } catch (Exception e) {
@@ -165,9 +165,9 @@ public class KeyService implements KeyPresenter {
     }
 
     @Override
-    public BaseResponse<List<KeyTypeEnum>> getKeyTypeList() {
-        BaseResponse<List<KeyTypeEnum>> response = new BaseResponse<>();
-        List<KeyTypeEnum> list = Arrays.asList(KeyTypeEnum.values());
+    public BaseResponse<List<CategoryEnum>> getKeyTypeList() {
+        BaseResponse<List<CategoryEnum>> response = new BaseResponse<>();
+        List<CategoryEnum> list = Arrays.asList(CategoryEnum.values());
 
         response.setSuccess(list);
 

@@ -20,7 +20,7 @@ public class KeyMapper {
             model.setSecureId(generateSecureId());
             model.setName(request.getName());
             model.setNote(request.getNote());
-            model.setKeyType(request.getKeyType());
+            model.setCategory(request.getCategory());
             model.setUsername(request.getUsername());
             model.setUserSecureId(CurrentUser.get().getUserSecureId());
             model.setPassword(encryptor(request.getPassword(), true));
@@ -51,7 +51,7 @@ public class KeyMapper {
             response.setSecureId(model.getSecureId());
             response.setName(model.getName());
             response.setUsername(mask(model.getUsername()));
-            response.setKeyType(model.getKeyType());
+            response.setCategory(model.getCategory());
 
             if (isDetail) {
                 response.setNote(model.getNote());
@@ -88,7 +88,7 @@ public class KeyMapper {
     public KeyModel setKeyByRequest(CreateEditKeyRequest request, KeyModel model) {
         if (model != null) {
             model.setPassword(encryptor(request.getPassword(), true));
-            model.setKeyType(request.getKeyType());
+            model.setCategory(request.getCategory());
             model.setUsername(request.getUsername());
             model.setNote(request.getNote());
             model.setName(request.getName());

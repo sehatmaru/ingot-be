@@ -5,7 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import xcode.ingot.domain.enums.KeyTypeEnum;
+import xcode.ingot.domain.enums.CategoryEnum;
 import xcode.ingot.domain.request.BaseRequest;
 import xcode.ingot.domain.request.key.CreateEditKeyRequest;
 import xcode.ingot.domain.request.key.ListKeyRequest;
@@ -81,8 +81,8 @@ public class KeyAPI {
     }
 
     @GetMapping("/type/list")
-    ResponseEntity<BaseResponse<List<KeyTypeEnum>>> getKeyTypeList() {
-        BaseResponse<List<KeyTypeEnum>> response = keyPresenter.getKeyTypeList();
+    ResponseEntity<BaseResponse<List<CategoryEnum>>> getKeyTypeList() {
+        BaseResponse<List<CategoryEnum>> response = keyPresenter.getKeyTypeList();
 
         return ResponseEntity
                 .status(HttpStatus.OK)

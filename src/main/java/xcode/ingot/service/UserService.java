@@ -22,6 +22,7 @@ import xcode.ingot.presenter.UserPresenter;
 import java.util.Objects;
 import java.util.Optional;
 
+import static xcode.ingot.domain.enums.EventEnum.*;
 import static xcode.ingot.shared.ResponseCode.*;
 import static xcode.ingot.shared.Utils.encryptor;
 
@@ -30,6 +31,9 @@ import static xcode.ingot.shared.Utils.encryptor;
 public class UserService implements UserPresenter {
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private HistoryService historyService;
 
     @Autowired
     private UserRepository userRepository;
@@ -49,13 +53,19 @@ public class UserService implements UserPresenter {
             throw new AppException(AUTH_ERROR_MESSAGE);
         }
 
-        String token = jwtService.generateToken(model.get());
-        tokenRepository.save(new TokenModel(
-                token,
-                model.get().getSecureId()
-        ));
+        try {
+            String token = jwtService.generateToken(model.get());
+            tokenRepository.save(new TokenModel(
+                    token,
+                    model.get().getSecureId()
+            ));
 
-        response.setSuccess(userMapper.userModelToLoginResponse(model.get(), token));
+            historyService.addHistory(LOGIN, model.get().getSecureId());
+
+            response.setSuccess(userMapper.userModelToLoginResponse(model.get(), token));
+        } catch (Exception e) {
+            throw new AppException(e.toString());
+        }
 
         return response;
     }
@@ -71,6 +81,9 @@ public class UserService implements UserPresenter {
         try {
             UserModel model = userMapper.registerRequestToUserModel(request);
             userRepository.save(model);
+
+            historyService.addHistory(REGISTER, model.getSecureId());
+
             response.setSuccess(userMapper.userModelToRegisterResponse(model));
         } catch (Exception e) {
             throw new AppException(e.toString());
@@ -128,6 +141,8 @@ public class UserService implements UserPresenter {
         try {
             userRepository.save(userMapper.editProfileRequestToUserModel(request, model.get()));
 
+            historyService.addHistory(EDIT_PROFILE, null);
+
             response.setSuccess(true);
         } catch (Exception e) {
             throw new AppException(e.toString());
@@ -152,6 +167,8 @@ public class UserService implements UserPresenter {
 
         try {
             userRepository.save(userMapper.changePasswordRequestToUserModel(request));
+
+            historyService.addHistory(CHANGE_PASSWORD, null);
 
             response.setSuccess(true);
         } catch (Exception e) {

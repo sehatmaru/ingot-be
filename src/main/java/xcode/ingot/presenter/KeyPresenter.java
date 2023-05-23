@@ -1,6 +1,6 @@
 package xcode.ingot.presenter;
 
-import xcode.ingot.domain.enums.KeyTypeEnum;
+import xcode.ingot.domain.enums.CategoryEnum;
 import xcode.ingot.domain.request.BaseRequest;
 import xcode.ingot.domain.request.key.CreateEditKeyRequest;
 import xcode.ingot.domain.request.key.ListKeyRequest;
@@ -20,5 +20,5 @@ public interface KeyPresenter {
     BaseResponse<ListKeyResponse> getList(ListKeyRequest request);
     BaseResponse<OpenKeyResponse> openKey(OpenDeleteKeyRequest request);
     BaseResponse<Boolean> deleteKey(OpenDeleteKeyRequest request);
-    BaseResponse<List<KeyTypeEnum>> getKeyTypeList();
+    BaseResponse<List<CategoryEnum>> getKeyTypeList();
 }

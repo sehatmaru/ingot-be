@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-import xcode.ingot.domain.enums.KeyTypeEnum;
+import xcode.ingot.domain.enums.CategoryEnum;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -31,8 +31,8 @@ public class KeyModel {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "key_type")
-    private KeyTypeEnum keyType;
+    @Column(name = "category")
+    private CategoryEnum category;
 
     @Column(name = "password")
     private String password;

@@ -30,7 +30,7 @@ public class HistoryService implements HistoryPresenter {
         List<HistoryResponse> result = new ArrayList<>();
 
         try {
-            Optional<List<HistoryModel>> models = historyRepository.findAllByUserSecureId(CurrentUser.get().getUserSecureId());
+            Optional<List<HistoryModel>> models = historyRepository.findAllByUserSecureIdOrderByCreatedAtDesc(CurrentUser.get().getUserSecureId());
 
             if (models.isPresent()) {
                 result = historyMapper.historyModelListToHistoryResponseList(models.get());
@@ -44,11 +44,12 @@ public class HistoryService implements HistoryPresenter {
         return response;
     }
 
-    public void addHistory(EventEnum event) {
+    public void addHistory(EventEnum event, String secureId) {
+        String userSecureId = secureId != null ? secureId : CurrentUser.get().getUserSecureId();
         try {
             HistoryModel model = new HistoryModel();
             model.setSecureId(generateSecureId());
-            model.setUserSecureId(CurrentUser.get().getUserSecureId());
+            model.setUserSecureId(userSecureId);
             model.setCreatedAt(new Date());
             model.setEvent(event);
 

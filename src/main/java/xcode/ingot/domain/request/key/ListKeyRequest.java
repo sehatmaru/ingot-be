@@ -2,7 +2,7 @@ package xcode.ingot.domain.request.key;
 
 import lombok.Getter;
 import lombok.Setter;
-import xcode.ingot.domain.enums.KeyTypeEnum;
+import xcode.ingot.domain.enums.CategoryEnum;
 
 import javax.validation.constraints.NotBlank;
 
@@ -12,8 +12,7 @@ public class ListKeyRequest {
     @NotBlank()
     private String search = "";
 
-    @NotBlank()
-    private KeyTypeEnum keyType;
+    private CategoryEnum category;
 
     public ListKeyRequest() {
     }
