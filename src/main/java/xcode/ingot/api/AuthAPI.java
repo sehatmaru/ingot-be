@@ -92,6 +92,26 @@ public class AuthAPI {
                 .body(response);
     }
 
+    @PostMapping("/password/forgot")
+    ResponseEntity<BaseResponse<Boolean>> forgotPassword(@RequestBody @Validated ForgotPasswordRequest request) {
+        BaseResponse<Boolean> response = userPresenter.forgotPassword(request);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @PostMapping("/password/reset")
+    ResponseEntity<BaseResponse<Boolean>> resetPassword(@RequestBody @Validated ResetPasswordRequest request) {
+        BaseResponse<Boolean> response = userPresenter.resetPassword(request);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
     @GetMapping("/otp/resend")
     ResponseEntity<BaseResponse<Boolean>> resendOtp() {
         BaseResponse<Boolean> response = userPresenter.resendOtp();

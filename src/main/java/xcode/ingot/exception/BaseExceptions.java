@@ -76,7 +76,7 @@ public class BaseExceptions extends ResponseEntityExceptionHandler {
                 break;
             }
             case NOT_FOUND_MESSAGE: {
-                response.setNotFound();
+                response.setNotFound(NOT_FOUND_MESSAGE);
                 break;
             }
             case EXIST_MESSAGE: {
@@ -101,6 +101,14 @@ public class BaseExceptions extends ResponseEntityExceptionHandler {
             }
             case USERNAME_EXIST: {
                 response.setExistData(USERNAME_EXIST);
+                break;
+            }
+            case EMAIL_NOT_FOUND: {
+                response.setNotFound(EMAIL_NOT_FOUND);
+                break;
+            }
+            case INVALID_CODE: {
+                response.setNotFound(INVALID_CODE);
                 break;
             }
             default: response.setFailed(ex.getMessage());

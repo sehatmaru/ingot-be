@@ -14,4 +14,6 @@ public interface UserPresenter {
     BaseResponse<Boolean> editProfile(EditProfileRequest request);
     BaseResponse<Boolean> changePassword(ChangePasswordRequest request);
     BaseResponse<Boolean> logout();
+    BaseResponse<Boolean> forgotPassword(ForgotPasswordRequest request);
+    BaseResponse<Boolean> resetPassword(ResetPasswordRequest request);
 }

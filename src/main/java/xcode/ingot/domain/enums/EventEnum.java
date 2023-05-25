@@ -11,5 +11,6 @@ public enum EventEnum {
     LOGIN,
     SHARED_KEY,
     CHANGE_PASSWORD,
-    EDIT_PROFILE
+    EDIT_PROFILE,
+    RESET_PASSWORD
 }

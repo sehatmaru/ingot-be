@@ -22,9 +22,9 @@ public class BaseResponse<T> {
         this.result = data;
     }
 
-    public void setNotFound() {
+    public void setNotFound(String message) {
         this.statusCode = HttpStatus.NOT_FOUND.value();
-        this.message = NOT_FOUND_MESSAGE;
+        this.message = message;
     }
 
     public void setFailed(String message) {

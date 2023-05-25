@@ -2,6 +2,7 @@ package xcode.ingot.shared;
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
+import java.security.SecureRandom;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -10,13 +11,27 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 public class Utils {
+
+    private static final long EXPIRE_DURATION = 24 * 60 * 60 * 1000; // 24 hour
+    private static final long TEMPORARY_EXPIRE_DURATION = 5 * 60 * 1000; // 5 minute
+    private static final String ALLOWED_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
     public static String generateSecureId() {
         return UUID.randomUUID().toString();
     }
 
-    private static final long EXPIRE_DURATION = 24 * 60 * 60 * 1000; // 24 hour
-    private static final long TEMPORARY_EXPIRE_DURATION = 5 * 60 * 1000; // 5 minute
+    public static String generateSecureCharId() {
+        StringBuilder sb = new StringBuilder(20);
+        SecureRandom random = new SecureRandom();
 
+        for (int i = 0; i < 20; i++) {
+            int randomIndex = random.nextInt(ALLOWED_CHARACTERS.length());
+            char randomChar = ALLOWED_CHARACTERS.charAt(randomIndex);
+            sb.append(randomChar);
+        }
+
+        return sb.toString();
+    }
     public static String encryptor(String value, boolean isEncrypt) {
         StandardPBEStringEncryptor jasypt = new StandardPBEStringEncryptor();
 

@@ -2,12 +2,11 @@ package xcode.ingot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import xcode.ingot.domain.mapper.CommonMapper;
 import xcode.ingot.domain.mapper.UserMapper;
-import xcode.ingot.domain.model.CurrentUser;
-import xcode.ingot.domain.model.OtpModel;
-import xcode.ingot.domain.model.TokenModel;
-import xcode.ingot.domain.model.UserModel;
+import xcode.ingot.domain.model.*;
 import xcode.ingot.domain.repository.OtpRepository;
+import xcode.ingot.domain.repository.ResetRepository;
 import xcode.ingot.domain.repository.TokenRepository;
 import xcode.ingot.domain.repository.UserRepository;
 import xcode.ingot.domain.request.auth.*;
@@ -17,6 +16,7 @@ import xcode.ingot.domain.response.auth.RegisterResponse;
 import xcode.ingot.exception.AppException;
 import xcode.ingot.presenter.UserPresenter;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -44,7 +44,11 @@ public class UserService implements UserPresenter {
     @Autowired
     private OtpRepository otpRepository;
 
+    @Autowired
+    private ResetRepository resetRepository;
+
     private final UserMapper userMapper = new UserMapper();
+    private final CommonMapper commonMapper = new CommonMapper();
 
     @Override
     public BaseResponse<LoginResponse> login(LoginRequest request) {
@@ -191,6 +195,70 @@ public class UserService implements UserPresenter {
 
         try {
             tokenModel.ifPresent(tokenRepository::delete);
+
+            response.setSuccess(true);
+        } catch (Exception e) {
+            throw new AppException(e.toString());
+        }
+
+        return response;
+    }
+
+    @Override
+    public BaseResponse<Boolean> forgotPassword(ForgotPasswordRequest request) {
+        BaseResponse<Boolean> response = new BaseResponse<>();
+
+        Optional<UserModel> userModel = userRepository.findByEmailAndActiveIsTrueAndDeletedAtIsNull(request.getEmail());
+
+        if (userModel.isEmpty()) {
+            throw new AppException(EMAIL_NOT_FOUND);
+        }
+
+        try {
+            String code = generateSecureCharId();
+
+            resetRepository.save(commonMapper.generateResetModel(request.getEmail(), code));
+            emailService.sendResetPasswordEmail(request.getEmail(), code);
+
+            response.setSuccess(true);
+        } catch (Exception e) {
+            throw new AppException(e.toString());
+        }
+
+        return response;
+    }
+
+    @Override
+    public BaseResponse<Boolean> resetPassword(ResetPasswordRequest request) {
+        BaseResponse<Boolean> response = new BaseResponse<>();
+
+        List<ResetModel> resetModelList = resetRepository.findByCodeAndVerifiedIsFalse(request.getCode());
+        ResetModel resetModel = null;
+
+        for (ResetModel model : resetModelList) {
+            if (model.isValid()) {
+                resetModel = model;
+                break;
+            }
+        }
+
+        if (resetModel == null) {
+            throw new AppException(INVALID_CODE);
+        }
+
+        Optional<UserModel> userModel = userRepository.findByEmailAndActiveIsTrueAndDeletedAtIsNull(resetModel.getEmail());
+
+        if (userModel.isEmpty()) {
+            throw new AppException(NOT_FOUND_MESSAGE);
+        }
+
+        try {
+            userRepository.save(userMapper.resetPasswordRequestToUserModel(userModel.get(), request.getNewPassword()));
+
+            resetModel.setVerified(true);
+            resetRepository.save(resetModel);
+
+            historyService.addHistory(RESET_PASSWORD, userModel.get().getSecureId());
 
             response.setSuccess(true);
         } catch (Exception e) {

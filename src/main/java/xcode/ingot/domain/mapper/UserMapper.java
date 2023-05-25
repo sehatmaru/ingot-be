@@ -68,6 +68,17 @@ public class UserMapper {
         }
     }
 
+    public UserModel resetPasswordRequestToUserModel(UserModel model, String newPassword) {
+        if (model != null) {
+            model.setPassword(encryptor(newPassword, true));
+            model.setUpdatedAt(new Date());
+
+            return model;
+        } else {
+            return null;
+        }
+    }
+
     public RegisterResponse userModelToRegisterResponse(String token) {
         if (!token.isEmpty()) {
             RegisterResponse response = new RegisterResponse();
