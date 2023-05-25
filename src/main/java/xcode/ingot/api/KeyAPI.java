@@ -80,9 +80,9 @@ public class KeyAPI {
                 .body(response);
     }
 
-    @GetMapping("/type/list")
-    ResponseEntity<BaseResponse<List<CategoryEnum>>> getKeyTypeList() {
-        BaseResponse<List<CategoryEnum>> response = keyPresenter.getKeyTypeList();
+    @GetMapping("/category/list")
+    ResponseEntity<BaseResponse<List<CategoryEnum>>> getCategoryList() {
+        BaseResponse<List<CategoryEnum>> response = keyPresenter.getCategoryList();
 
         return ResponseEntity
                 .status(HttpStatus.OK)

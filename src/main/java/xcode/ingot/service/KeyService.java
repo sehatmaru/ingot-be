@@ -105,7 +105,7 @@ public class KeyService implements KeyPresenter {
         ListKeyResponse result = new ListKeyResponse();
 
         try {
-            Optional<List<KeyModel>> models = keyRepository.findAllByUserSecureIdAndDeletedAtIsNull(CurrentUser.get().getUserSecureId());
+            Optional<List<KeyModel>> models = keyRepository.findAllByUserSecureIdAndDeletedAtIsNullOrderByUpdatedAtDesc(CurrentUser.get().getUserSecureId());
 
             if (models.isPresent()) {
                 List<KeyModel> filteredModels = models.get().stream()
@@ -165,7 +165,7 @@ public class KeyService implements KeyPresenter {
     }
 
     @Override
-    public BaseResponse<List<CategoryEnum>> getKeyTypeList() {
+    public BaseResponse<List<CategoryEnum>> getCategoryList() {
         BaseResponse<List<CategoryEnum>> response = new BaseResponse<>();
         List<CategoryEnum> list = Arrays.asList(CategoryEnum.values());
 

@@ -14,7 +14,6 @@ import xcode.ingot.domain.request.auth.*;
 import xcode.ingot.domain.response.BaseResponse;
 import xcode.ingot.domain.response.auth.LoginResponse;
 import xcode.ingot.domain.response.auth.RegisterResponse;
-import xcode.ingot.domain.response.auth.VerifyOtpResponse;
 import xcode.ingot.exception.AppException;
 import xcode.ingot.presenter.UserPresenter;
 
@@ -109,8 +108,8 @@ public class UserService implements UserPresenter {
     }
 
     @Override
-    public BaseResponse<VerifyOtpResponse> verifyOtp(VerifyOtpRequest request) {
-        BaseResponse<VerifyOtpResponse> response = new BaseResponse<>();
+    public BaseResponse<Boolean> verifyOtp(VerifyOtpRequest request) {
+        BaseResponse<Boolean> response = new BaseResponse<>();
 
         Optional<UserModel> userModel = userRepository.findBySecureIdAndDeletedAtIsNull(CurrentUser.get().getUserSecureId());
 
@@ -139,7 +138,7 @@ public class UserService implements UserPresenter {
 
             historyService.addHistory(REGISTER, userModel.get().getSecureId());
 
-            response.setSuccess(userMapper.userModelToVerifyOtpResponse(userModel.get()));
+            response.setSuccess(true);
         } catch (Exception e) {
             throw new AppException(e.toString());
         }

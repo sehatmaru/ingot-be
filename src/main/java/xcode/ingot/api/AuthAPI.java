@@ -9,7 +9,6 @@ import xcode.ingot.domain.request.auth.*;
 import xcode.ingot.domain.response.BaseResponse;
 import xcode.ingot.domain.response.auth.LoginResponse;
 import xcode.ingot.domain.response.auth.RegisterResponse;
-import xcode.ingot.domain.response.auth.VerifyOtpResponse;
 import xcode.ingot.presenter.UserPresenter;
 
 @Validated
@@ -84,8 +83,8 @@ public class AuthAPI {
     }
 
     @PostMapping("/otp/verify")
-    ResponseEntity<BaseResponse<VerifyOtpResponse>> verifyOtp(@RequestBody @Validated VerifyOtpRequest request) {
-        BaseResponse<VerifyOtpResponse> response = userPresenter.verifyOtp(request);
+    ResponseEntity<BaseResponse<Boolean>> verifyOtp(@RequestBody @Validated VerifyOtpRequest request) {
+        BaseResponse<Boolean> response = userPresenter.verifyOtp(request);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

@@ -20,5 +20,5 @@ public interface KeyPresenter {
     BaseResponse<ListKeyResponse> getList(ListKeyRequest request);
     BaseResponse<OpenKeyResponse> openKey(OpenDeleteKeyRequest request);
     BaseResponse<Boolean> deleteKey(OpenDeleteKeyRequest request);
-    BaseResponse<List<CategoryEnum>> getKeyTypeList();
+    BaseResponse<List<CategoryEnum>> getCategoryList();
 }

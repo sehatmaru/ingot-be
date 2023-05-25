@@ -10,5 +10,6 @@ public enum CategoryEnum {
     APPLE,
     STEAM,
     CODE,
-    MICROSOFT
+    MICROSOFT,
+    MAIL
 }

@@ -7,7 +7,6 @@ import xcode.ingot.domain.request.auth.EditProfileRequest;
 import xcode.ingot.domain.request.auth.RegisterRequest;
 import xcode.ingot.domain.response.auth.LoginResponse;
 import xcode.ingot.domain.response.auth.RegisterResponse;
-import xcode.ingot.domain.response.auth.VerifyOtpResponse;
 
 import java.util.Date;
 
@@ -95,17 +94,4 @@ public class UserMapper {
         }
     }
 
-    public VerifyOtpResponse userModelToVerifyOtpResponse(UserModel model) {
-        if (model != null) {
-            VerifyOtpResponse response = new VerifyOtpResponse();
-            response.setSecureId(model.getSecureId());
-            response.setFullname(model.getFullname());
-            response.setEmail(model.getEmail());
-            response.setUsername(model.getUsername());
-
-            return response;
-        } else {
-            return null;
-        }
-    }
 }
