@@ -13,10 +13,7 @@ import xcode.ingot.domain.request.key.CreateEditKeyRequest;
 import xcode.ingot.domain.request.key.ListKeyRequest;
 import xcode.ingot.domain.request.key.OpenDeleteKeyRequest;
 import xcode.ingot.domain.response.BaseResponse;
-import xcode.ingot.domain.response.key.CreateEditKeyResponse;
-import xcode.ingot.domain.response.key.KeyResponse;
-import xcode.ingot.domain.response.key.ListKeyResponse;
-import xcode.ingot.domain.response.key.OpenKeyResponse;
+import xcode.ingot.domain.response.key.*;
 import xcode.ingot.exception.AppException;
 import xcode.ingot.presenter.KeyPresenter;
 
@@ -24,6 +21,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static xcode.ingot.shared.ResponseCode.*;
+import static xcode.ingot.shared.Utils.encryptor;
 
 @Service
 public class KeyService implements KeyPresenter {
@@ -170,6 +168,30 @@ public class KeyService implements KeyPresenter {
         List<CategoryEnum> list = Arrays.asList(CategoryEnum.values());
 
         response.setSuccess(list);
+
+        return response;
+    }
+
+    @Override
+    public BaseResponse<CopyKeyResponse> copyKeyPassword(BaseRequest request) {
+        BaseResponse<CopyKeyResponse> response = new BaseResponse<>();
+
+        Optional<KeyModel> model = keyRepository.findBySecureIdAndDeletedAtIsNull(request.getSecureId());
+
+        if (model.isEmpty() || !isBelonging(model.get().getUserSecureId())) {
+            throw new AppException(NOT_FOUND_MESSAGE);
+        }
+
+        try {
+            CopyKeyResponse result = new CopyKeyResponse();
+            result.setPassword(encryptor(model.get().getPassword(), false));
+
+            historyService.addHistory(EventEnum.COPY_PASSWORD, null);
+
+            response.setSuccess(result);
+        } catch (Exception e) {
+            throw new AppException(e.toString());
+        }
 
         return response;
     }

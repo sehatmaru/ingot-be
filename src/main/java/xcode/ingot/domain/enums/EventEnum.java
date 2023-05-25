@@ -2,6 +2,7 @@ package xcode.ingot.domain.enums;
 
 public enum EventEnum {
 
+    COPY_PASSWORD,
     OPEN_KEY,
     EDIT_KEY,
     DELETE_KEY,

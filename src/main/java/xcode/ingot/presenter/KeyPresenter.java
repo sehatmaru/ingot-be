@@ -6,10 +6,7 @@ import xcode.ingot.domain.request.key.CreateEditKeyRequest;
 import xcode.ingot.domain.request.key.ListKeyRequest;
 import xcode.ingot.domain.request.key.OpenDeleteKeyRequest;
 import xcode.ingot.domain.response.BaseResponse;
-import xcode.ingot.domain.response.key.CreateEditKeyResponse;
-import xcode.ingot.domain.response.key.KeyResponse;
-import xcode.ingot.domain.response.key.ListKeyResponse;
-import xcode.ingot.domain.response.key.OpenKeyResponse;
+import xcode.ingot.domain.response.key.*;
 
 import java.util.List;
 
@@ -21,4 +18,5 @@ public interface KeyPresenter {
     BaseResponse<OpenKeyResponse> openKey(OpenDeleteKeyRequest request);
     BaseResponse<Boolean> deleteKey(OpenDeleteKeyRequest request);
     BaseResponse<List<CategoryEnum>> getCategoryList();
+    BaseResponse<CopyKeyResponse> copyKeyPassword(BaseRequest request);
 }

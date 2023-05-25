@@ -11,10 +11,7 @@ import xcode.ingot.domain.request.key.CreateEditKeyRequest;
 import xcode.ingot.domain.request.key.ListKeyRequest;
 import xcode.ingot.domain.request.key.OpenDeleteKeyRequest;
 import xcode.ingot.domain.response.BaseResponse;
-import xcode.ingot.domain.response.key.CreateEditKeyResponse;
-import xcode.ingot.domain.response.key.KeyResponse;
-import xcode.ingot.domain.response.key.ListKeyResponse;
-import xcode.ingot.domain.response.key.OpenKeyResponse;
+import xcode.ingot.domain.response.key.*;
 import xcode.ingot.presenter.KeyPresenter;
 
 import java.util.List;
@@ -93,6 +90,16 @@ public class KeyAPI {
     @PostMapping("/delete")
     ResponseEntity<BaseResponse<Boolean>> deleteKey(@RequestBody @Validated OpenDeleteKeyRequest request) {
         BaseResponse<Boolean> response = keyPresenter.deleteKey(request);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @PostMapping("/copy")
+    ResponseEntity<BaseResponse<CopyKeyResponse>> copyKeyPassword(@RequestBody @Validated BaseRequest request) {
+        BaseResponse<CopyKeyResponse> response = keyPresenter.copyKeyPassword(request);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
