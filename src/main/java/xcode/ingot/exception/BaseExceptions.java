@@ -80,7 +80,7 @@ public class BaseExceptions extends ResponseEntityExceptionHandler {
                 break;
             }
             case EXIST_MESSAGE: {
-                response.setExistData();
+                response.setExistData(EXIST_MESSAGE);
                 break;
             }
             case PARAMS_ERROR_MESSAGE: {
@@ -93,6 +93,14 @@ public class BaseExceptions extends ResponseEntityExceptionHandler {
             }
             case OTP_ERROR_MESSAGE: {
                 response.setInvalidOTP();
+                break;
+            }
+            case EMAIL_EXIST: {
+                response.setExistData(EMAIL_EXIST);
+                break;
+            }
+            case USERNAME_EXIST: {
+                response.setExistData(USERNAME_EXIST);
                 break;
             }
             default: response.setFailed(ex.getMessage());

@@ -57,9 +57,9 @@ public class BaseResponse<T> {
         this.message = OTP_ERROR_MESSAGE;
     }
 
-    public void setExistData() {
+    public void setExistData(String message) {
         this.statusCode = HttpStatus.CONFLICT.value();
-        this.message = EXIST_MESSAGE;
+        this.message = message;
     }
 
     public void setInvalidMethod(String message) {

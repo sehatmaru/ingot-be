@@ -78,8 +78,12 @@ public class UserService implements UserPresenter {
     public BaseResponse<RegisterResponse> register(RegisterRequest request) {
         BaseResponse<RegisterResponse> response = new BaseResponse<>();
 
-        if (userRepository.findByEmailAndUsernameAndActiveIsTrueAndDeletedAtIsNull(request.getEmail(), request.getUsername()).isPresent()) {
-            throw new AppException(EXIST_MESSAGE);
+        if (userRepository.findByEmailAndActiveIsTrueAndDeletedAtIsNull(request.getEmail()).isPresent()) {
+            throw new AppException(EMAIL_EXIST);
+        }
+
+        if (userRepository.findByUsernameAndActiveIsTrueAndDeletedAtIsNull(request.getUsername()).isPresent()) {
+            throw new AppException(USERNAME_EXIST);
         }
 
         try {
