@@ -40,7 +40,7 @@ public class EmailService {
 
             helper.setTo(email);
             helper.setSubject("Reset Password");
-            String emailContent = "Click <a href=\"https://xcode-ingot.web.app/new/reset-password?code=" + code + "\">here</a> to reset your password. This link is valid for 5 minutes.";
+            String emailContent = "Click <a href=\"https://xcode-ingot.web.app/reset-password?code=" + code + "\">here</a> to reset your password. This link is valid for 5 minutes.";
             helper.setText(emailContent, true);
 
             mailSender.send(message);
