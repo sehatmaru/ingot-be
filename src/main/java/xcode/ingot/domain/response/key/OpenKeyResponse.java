@@ -5,7 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OpenKeyResponse {
+public class OpenKeyResponse extends KeyResponse {
     private String password;
-    private String username;
 }

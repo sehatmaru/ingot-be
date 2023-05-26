@@ -126,10 +126,10 @@ public class KeyService implements KeyPresenter {
     }
 
     @Override
-    public BaseResponse<OpenKeyResponse> openKey(OpenDeleteKeyRequest request) {
+    public BaseResponse<OpenKeyResponse> openKey(BaseRequest request) {
         BaseResponse<OpenKeyResponse> response = new BaseResponse<>();
 
-        KeyModel model = findBySecureId(request.getSecureId(), request.getPassword());
+        KeyModel model = findBySecureId(request.getSecureId());
 
         try {
             historyService.addHistory(EventEnum.OPEN_KEY, null);
@@ -146,7 +146,7 @@ public class KeyService implements KeyPresenter {
     public BaseResponse<Boolean> deleteKey(OpenDeleteKeyRequest request) {
         BaseResponse<Boolean> response = new BaseResponse<>();
 
-        KeyModel model = findBySecureId(request.getSecureId(), request.getPassword());
+        KeyModel model = findBySecureId(request.getSecureId());
 
         try {
             model.setDeletedAt(new Date());
@@ -200,16 +200,12 @@ public class KeyService implements KeyPresenter {
         return secureId.equals(CurrentUser.get().getUserSecureId());
     }
 
-    private KeyModel findBySecureId(String secureId, String password) {
+    private KeyModel findBySecureId(String secureId) {
 
         Optional<KeyModel> model = keyRepository.findBySecureIdAndDeletedAtIsNull(secureId);
 
         if (model.isEmpty() || !isBelonging(model.get().getUserSecureId())) {
             throw new AppException(NOT_FOUND_MESSAGE);
-        }
-
-        if (!userService.getCurrentUserPassword().equals(password)) {
-            throw new AppException(INVALID_PASSWORD);
         }
 
         return model.get();

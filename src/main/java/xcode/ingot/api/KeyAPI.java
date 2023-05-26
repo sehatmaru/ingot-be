@@ -58,7 +58,7 @@ public class KeyAPI {
     }
 
     @PostMapping("/open")
-    ResponseEntity<BaseResponse<OpenKeyResponse>> openKey(@RequestBody @Validated OpenDeleteKeyRequest request) {
+    ResponseEntity<BaseResponse<OpenKeyResponse>> openKey(@RequestBody @Validated BaseRequest request) {
         BaseResponse<OpenKeyResponse> response = keyPresenter.openKey(request);
 
         return ResponseEntity

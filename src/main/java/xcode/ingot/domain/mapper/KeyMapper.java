@@ -68,6 +68,10 @@ public class KeyMapper {
             OpenKeyResponse response = new OpenKeyResponse();
             response.setPassword(encryptor(model.getPassword(), false));
             response.setUsername(model.getUsername());
+            response.setCategory(model.getCategory());
+            response.setName(model.getName());
+            response.setNote(model.getNote());
+            response.setSecureId(model.getSecureId());
 
             return response;
         } else {
