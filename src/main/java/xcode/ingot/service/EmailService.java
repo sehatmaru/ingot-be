@@ -24,7 +24,7 @@ public class EmailService {
 
             helper.setTo(email);
             helper.setSubject("OTP Verification");
-            String emailContent = "Your OTP: <b" + otp + "<b>. This OTP is valid for 5 minutes.";
+            String emailContent = "Your OTP: <b>" + otp + "</b>. This OTP is valid for 5 minutes.";
             helper.setText(emailContent, true);
 
             mailSender.send(message);

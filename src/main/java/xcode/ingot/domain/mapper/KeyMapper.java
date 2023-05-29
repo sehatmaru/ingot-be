@@ -72,6 +72,7 @@ public class KeyMapper {
             response.setName(model.getName());
             response.setNote(model.getNote());
             response.setSecureId(model.getSecureId());
+            response.setLastEdited(model.getUpdatedAt());
 
             return response;
         } else {

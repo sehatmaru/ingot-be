@@ -18,7 +18,6 @@ public class CreateEditKeyRequest extends BaseRequest {
 
     private CategoryEnum category;
 
-    @NotBlank()
     private String note;
 
     @NotBlank()
