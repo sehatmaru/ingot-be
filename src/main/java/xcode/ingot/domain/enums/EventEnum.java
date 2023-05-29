@@ -7,6 +7,7 @@ public enum EventEnum {
     EDIT_KEY,
     DELETE_KEY,
     CREATE_KEY,
+    LOGOUT,
     REGISTER,
     LOGIN,
     SHARED_KEY,

@@ -195,6 +195,7 @@ public class UserService implements UserPresenter {
 
         try {
             tokenModel.ifPresent(tokenRepository::delete);
+            historyService.addHistory(LOGOUT, null);
 
             response.setSuccess(true);
         } catch (Exception e) {

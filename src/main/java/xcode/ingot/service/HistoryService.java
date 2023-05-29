@@ -30,7 +30,7 @@ public class HistoryService implements HistoryPresenter {
         List<HistoryResponse> result = new ArrayList<>();
 
         try {
-            Optional<List<HistoryModel>> models = historyRepository.findAllByUserSecureIdOrderByCreatedAtDesc(CurrentUser.get().getUserSecureId());
+            Optional<List<HistoryModel>> models = historyRepository.findByUserSecureIdOrderByCreatedAtDesc(CurrentUser.get().getUserSecureId());
 
             if (models.isPresent()) {
                 result = historyMapper.historyModelListToHistoryResponseList(models.get());

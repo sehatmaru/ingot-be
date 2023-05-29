@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface HistoryRepository extends JpaRepository<HistoryModel, String> {
     Optional<HistoryModel> findBySecureId(String secureId);
 
-    Optional<List<HistoryModel>> findAllByUserSecureIdOrderByCreatedAtDesc(String secureId);
+    Optional<List<HistoryModel>> findByUserSecureIdOrderByCreatedAtDesc(String secureId);
 
 }
