@@ -88,7 +88,7 @@ public class KeyAPI {
     }
 
     @PostMapping("/delete")
-    ResponseEntity<BaseResponse<Boolean>> deleteKey(@RequestBody @Validated OpenDeleteKeyRequest request) {
+    ResponseEntity<BaseResponse<Boolean>> deleteKey(@RequestBody @Validated BaseRequest request) {
         BaseResponse<Boolean> response = keyPresenter.deleteKey(request);
 
         return ResponseEntity

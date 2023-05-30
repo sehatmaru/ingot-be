@@ -143,7 +143,7 @@ public class KeyService implements KeyPresenter {
     }
 
     @Override
-    public BaseResponse<Boolean> deleteKey(OpenDeleteKeyRequest request) {
+    public BaseResponse<Boolean> deleteKey(BaseRequest request) {
         BaseResponse<Boolean> response = new BaseResponse<>();
 
         KeyModel model = findBySecureId(request.getSecureId());
