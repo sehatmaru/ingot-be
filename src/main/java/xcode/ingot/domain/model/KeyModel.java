@@ -43,6 +43,9 @@ public class KeyModel {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "link_url")
+    private String linkUrl;
+
     @Column(name = "created_at")
     private Date createdAt;
  

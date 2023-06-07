@@ -24,6 +24,7 @@ public class KeyMapper {
             model.setUsername(request.getUsername());
             model.setUserSecureId(CurrentUser.get().getUserSecureId());
             model.setPassword(encryptor(request.getPassword(), true));
+            model.setLinkUrl(request.getLinkUrl());
             model.setCreatedAt(new Date());
             model.setUpdatedAt(new Date());
 
@@ -52,6 +53,7 @@ public class KeyMapper {
             response.setName(model.getName());
             response.setUsername(mask(model.getUsername()));
             response.setCategory(model.getCategory());
+            response.setLinkUrl(model.getLinkUrl());
 
             if (isDetail) {
                 response.setNote(model.getNote());
@@ -72,6 +74,7 @@ public class KeyMapper {
             response.setName(model.getName());
             response.setNote(model.getNote());
             response.setSecureId(model.getSecureId());
+            response.setLinkUrl(model.getLinkUrl());
             response.setLastEdited(model.getUpdatedAt());
 
             return response;
@@ -97,6 +100,7 @@ public class KeyMapper {
             model.setUsername(request.getUsername());
             model.setNote(request.getNote());
             model.setName(request.getName());
+            model.setLinkUrl(request.getLinkUrl());
             model.setUpdatedAt(new Date());
 
             return model;

@@ -12,4 +12,5 @@ public class KeyResponse {
     private CategoryEnum category;
     private String note;
     private String username;
+    private String linkUrl;
 }

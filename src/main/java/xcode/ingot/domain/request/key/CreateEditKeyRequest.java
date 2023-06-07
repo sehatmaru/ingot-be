@@ -22,6 +22,7 @@ public class CreateEditKeyRequest extends BaseRequest {
 
     @NotBlank()
     private String username;
+    private String linkUrl;
 
     public CreateEditKeyRequest() {
     }
