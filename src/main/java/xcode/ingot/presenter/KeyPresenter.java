@@ -17,5 +17,6 @@ public interface KeyPresenter {
     BaseResponse<OpenKeyResponse> openKey(BaseRequest request);
     BaseResponse<Boolean> deleteKey(BaseRequest request);
     BaseResponse<List<CategoryEnum>> getCategoryList();
-    BaseResponse<CopyKeyResponse> copyKeyPassword(BaseRequest request);
+    BaseResponse<PasswordResponse> copyKeyPassword(BaseRequest request);
+    BaseResponse<PasswordResponse> generatePassword();
 }

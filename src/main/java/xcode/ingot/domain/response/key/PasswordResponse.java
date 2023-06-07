@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CopyKeyResponse {
+public class PasswordResponse {
     private String password;
 }

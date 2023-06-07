@@ -9,7 +9,6 @@ import xcode.ingot.domain.enums.CategoryEnum;
 import xcode.ingot.domain.request.BaseRequest;
 import xcode.ingot.domain.request.key.CreateEditKeyRequest;
 import xcode.ingot.domain.request.key.ListKeyRequest;
-import xcode.ingot.domain.request.key.OpenDeleteKeyRequest;
 import xcode.ingot.domain.response.BaseResponse;
 import xcode.ingot.domain.response.key.*;
 import xcode.ingot.presenter.KeyPresenter;
@@ -98,8 +97,18 @@ public class KeyAPI {
     }
 
     @PostMapping("/copy")
-    ResponseEntity<BaseResponse<CopyKeyResponse>> copyKeyPassword(@RequestBody @Validated BaseRequest request) {
-        BaseResponse<CopyKeyResponse> response = keyPresenter.copyKeyPassword(request);
+    ResponseEntity<BaseResponse<PasswordResponse>> copyKeyPassword(@RequestBody @Validated BaseRequest request) {
+        BaseResponse<PasswordResponse> response = keyPresenter.copyKeyPassword(request);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @GetMapping("password/generate")
+    ResponseEntity<BaseResponse<PasswordResponse>> generatePassword() {
+        BaseResponse<PasswordResponse> response = keyPresenter.generatePassword();
 
         return ResponseEntity
                 .status(HttpStatus.OK)

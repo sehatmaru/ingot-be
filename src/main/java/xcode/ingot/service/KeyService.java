@@ -11,7 +11,6 @@ import xcode.ingot.domain.repository.KeyRepository;
 import xcode.ingot.domain.request.BaseRequest;
 import xcode.ingot.domain.request.key.CreateEditKeyRequest;
 import xcode.ingot.domain.request.key.ListKeyRequest;
-import xcode.ingot.domain.request.key.OpenDeleteKeyRequest;
 import xcode.ingot.domain.response.BaseResponse;
 import xcode.ingot.domain.response.key.*;
 import xcode.ingot.exception.AppException;
@@ -22,6 +21,7 @@ import java.util.stream.Collectors;
 
 import static xcode.ingot.shared.ResponseCode.*;
 import static xcode.ingot.shared.Utils.encryptor;
+import static xcode.ingot.shared.Utils.generateSecurePassword;
 
 @Service
 public class KeyService implements KeyPresenter {
@@ -173,8 +173,8 @@ public class KeyService implements KeyPresenter {
     }
 
     @Override
-    public BaseResponse<CopyKeyResponse> copyKeyPassword(BaseRequest request) {
-        BaseResponse<CopyKeyResponse> response = new BaseResponse<>();
+    public BaseResponse<PasswordResponse> copyKeyPassword(BaseRequest request) {
+        BaseResponse<PasswordResponse> response = new BaseResponse<>();
 
         Optional<KeyModel> model = keyRepository.findBySecureIdAndDeletedAtIsNull(request.getSecureId());
 
@@ -183,10 +183,26 @@ public class KeyService implements KeyPresenter {
         }
 
         try {
-            CopyKeyResponse result = new CopyKeyResponse();
+            PasswordResponse result = new PasswordResponse();
             result.setPassword(encryptor(model.get().getPassword(), false));
 
             historyService.addHistory(EventEnum.COPY_PASSWORD, null);
+
+            response.setSuccess(result);
+        } catch (Exception e) {
+            throw new AppException(e.toString());
+        }
+
+        return response;
+    }
+
+    @Override
+    public BaseResponse<PasswordResponse> generatePassword() {
+        BaseResponse<PasswordResponse> response = new BaseResponse<>();
+
+        try {
+            PasswordResponse result = new PasswordResponse();
+            result.setPassword(generateSecurePassword());
 
             response.setSuccess(result);
         } catch (Exception e) {

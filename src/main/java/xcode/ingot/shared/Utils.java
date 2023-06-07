@@ -15,6 +15,7 @@ public class Utils {
     private static final long EXPIRE_DURATION = 24 * 60 * 60 * 1000; // 24 hour
     private static final long TEMPORARY_EXPIRE_DURATION = 5 * 60 * 1000; // 5 minute
     private static final String ALLOWED_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]\\:;?><,./-=";
 
     public static String generateSecureId() {
         return UUID.randomUUID().toString();
@@ -32,6 +33,19 @@ public class Utils {
 
         return sb.toString();
     }
+
+    public static String generateSecurePassword() {
+        Random random = new SecureRandom();
+        StringBuilder password = new StringBuilder();
+
+        for (int i = 0; i < 12; i++) {
+            int randomIndex = random.nextInt(CHARACTERS.length());
+            password.append(CHARACTERS.charAt(randomIndex));
+        }
+
+        return password.toString();
+    }
+
     public static String encryptor(String value, boolean isEncrypt) {
         StandardPBEStringEncryptor jasypt = new StandardPBEStringEncryptor();
 
