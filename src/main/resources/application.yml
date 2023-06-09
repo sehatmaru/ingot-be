@@ -15,8 +15,8 @@ spring:
         hikari:
             maximum-pool-size: 10
         username: ENC(Te/HiLESkKgrvPIThZ3Yzg==)
-        password: ENC(5CFg3ktv/REfzLtK6M3I8i7AZVFm3G8Bj5Qipa/Qg1M=)
-        url: jdbc:mysql://containers-us-west-183.railway.app:6727/hinalang
+        password: ENC(eqxpsnpiLriw7Z3bsS3/a3bfDRmkWB7RyrlA1m0ynys=)
+        url: jdbc:mysql://containers-us-west-99.railway.app:8066/hinalang
     jpa:
         hibernate:
             ddl-auto: update
