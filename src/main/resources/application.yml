@@ -6,15 +6,17 @@ logging:
                 hikari.HikariConfig: DEBUG
 spring:
     cloud:
-      gcp:
-          sql:
-              instance-connection-name: xcode-ingot:us-central1:xcode-hinalang
-              database-name: hinalang
+        gcp:
+            sql:
+                instance-connection-name: xcode-ingot:us-central1:xcode-hinalang
+                database-name: hinalang
+                enabled: false
     datasource:
         hikari:
             maximum-pool-size: 10
         username: ENC(Te/HiLESkKgrvPIThZ3Yzg==)
-        password: ENC(Fr8Wmmyf73fWa0OzrzUeveh4oM0UczsKtAYs3qi4AO0=)
+        password: ENC(5CFg3ktv/REfzLtK6M3I8i7AZVFm3G8Bj5Qipa/Qg1M=)
+        url: jdbc:mysql://containers-us-west-183.railway.app:6727/hinalang
     jpa:
         hibernate:
             ddl-auto: update
@@ -23,6 +25,7 @@ spring:
             hibernate:
                 format_sql: true
         show-sql: true
+        generate-ddl: true
     main:
         allow-bean-definition-overriding: true
     mail:
